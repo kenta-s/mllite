@@ -5,9 +5,9 @@ import useInterval from '../lib/useInterval'
 import Clock from '../components/clock'
 import Counter from '../components/counter'
 import axios from 'axios'
-import fetch from 'isomorphic-unfetch'
-import { receiveMlModels, fetchMlModels } from '../actions/mlModels'
+import { receiveMlModels } from '../actions/mlModels'
 import { useSelector, useDispatch } from 'react-redux'
+import Layout from '../components/MainLayout'
 
 const MlModelPage = () => {
   const mlModels = useSelector(state => state.mlModels.data)
@@ -15,9 +15,11 @@ const MlModelPage = () => {
     return(<p key={i}>{mlModel.name}</p>)
   })
   return(
-    <div>
-      {mlModelsDom}
-    </div>
+    <Layout>
+      <div>
+        {mlModelsDom}
+      </div>
+    </Layout>
   )
 }
 

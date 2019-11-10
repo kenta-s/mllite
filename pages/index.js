@@ -4,8 +4,7 @@ import { withRedux } from '../lib/redux'
 import useInterval from '../lib/useInterval'
 import Clock from '../components/clock'
 import Counter from '../components/counter'
-import axios from 'axios'
-import { fetchMlModels } from '../actions/mlModels'
+import Layout from '../components/MainLayout'
 
 const IndexPage = () => {
   // Tick the time every second
@@ -18,10 +17,13 @@ const IndexPage = () => {
     })
   }, 1000)
   return (
-    <>
+    <Layout>
+      top page
+{/*
       <Clock />
       <Counter />
-    </>
+*/}
+    </Layout>
   )
 }
 
