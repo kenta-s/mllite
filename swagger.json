@@ -63,12 +63,16 @@ paths:
       - application/xml
       parameters:
       - in: body
-        name: body
+        name: name
         description: MlModel object
         required: true
         schema:
           $ref: '#/definitions/MlModel'
       responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MlModel'
         405:
           description: Invalid input
   /ml_models/{mlModelId}:
