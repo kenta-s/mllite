@@ -71,7 +71,7 @@ paths:
       responses:
         405:
           description: Invalid input
-  /mlModels/{petId}:
+  /ml_models/{mlModelId}:
     get:
       tags:
       - mlModel
@@ -82,7 +82,7 @@ paths:
       - application/json
       - application/xml
       parameters:
-      - name: petId
+      - name: mlModelId
         in: path
         description: ID of mlModel to return
         required: true
@@ -112,7 +112,7 @@ paths:
         in: header
         required: false
         type: string
-      - name: petId
+      - name: mlModelId
         in: path
         description: MlModel id to delete
         required: true
@@ -152,7 +152,7 @@ paths:
           description: MlModel not found
         405:
           description: Validation exception
-  /mlModels/{mlModelId}/uploadCsv:
+  /ml_models/{mlModelId}/uploadCsv:
     post:
       tags:
       - mlModel
