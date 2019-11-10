@@ -153,8 +153,8 @@ paths:
         required: true
         type: integer
         format: int64
-      - name: name
-        in: body
+      - in: body
+        name: name
         description: MlModel name
         required: true
         schema:
