@@ -157,7 +157,8 @@ paths:
         in: body
         description: MlModel name
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/MlModel'
       responses:
         200:
           description: successful operation
