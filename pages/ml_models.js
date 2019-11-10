@@ -9,8 +9,9 @@ import fetch from 'isomorphic-unfetch'
 import { receiveMlModels, fetchMlModels } from '../actions/mlModels'
 import { useSelector, useDispatch } from 'react-redux'
 
-const MlModelPage = props => {
-  const mlModelsDom = props.mlModels.map((mlModel, i) => {
+const MlModelPage = () => {
+  const mlModels = useSelector(state => state.mlModels.data)
+  const mlModelsDom = mlModels.map((mlModel, i) => {
     return(<p key={i}>{mlModel.name}</p>)
   })
   return(
@@ -24,9 +25,7 @@ MlModelPage.getInitialProps = ({ reduxStore }) => {
   const { dispatch } = reduxStore
   return axios.get('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models')
     .then(response => {
-      return({
-        mlModels: response.data
-      })
+      dispatch(receiveMlModels(response.data))
     })
     .catch(error => {
       console.error(error)
