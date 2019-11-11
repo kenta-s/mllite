@@ -1,10 +1,10 @@
-import { 
+import {
   RECEIVE_ML_MODELS,
 } from "../actionType";
 
 const initialState = {
   data: [],
-} 
+}
 
 const mlModels = (state = initialState, action) => {
   switch (action.type) {

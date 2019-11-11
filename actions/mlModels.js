@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { flashMessage } from 'redux-flash'
-import { 
+import {
   RECEIVE_ML_MODELS,
 } from '../actionType'
 

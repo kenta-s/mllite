@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from "react-redux"
+// import { connect } from "react-redux"
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -40,4 +40,4 @@ const MainListItems = () => {
 	)
 }
 
-export default connect(null, null)(MainListItems)
+export default MainListItems

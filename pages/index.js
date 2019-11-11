@@ -1,12 +1,22 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import Paper from '@material-ui/core/Paper';
 import { withRedux } from '../lib/redux'
 import useInterval from '../lib/useInterval'
 import Clock from '../components/clock'
 import Counter from '../components/counter'
 import Layout from '../components/MainLayout'
 
+const useStyles = makeStyles(theme => ({
+  fixedHeight: {
+    height: 340,
+  },
+}));
 const IndexPage = () => {
+  const classes = useStyles();
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   // Tick the time every second
   const dispatch = useDispatch()
   useInterval(() => {
@@ -18,7 +28,9 @@ const IndexPage = () => {
   }, 1000)
   return (
     <Layout>
-      top page
+      <Paper className={fixedHeightPaper}>
+        top page
+      </Paper>
 {/*
       <Clock />
       <Counter />

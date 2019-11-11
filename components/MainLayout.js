@@ -1,18 +1,3 @@
-// import Header from './Header';
-// 
-// const layoutStyle = {
-//   margin: 20,
-//   padding: 20,
-//   border: '1px solid #DDD'
-// };
-// 
-// const Layout = props => (
-//   <div style={layoutStyle}>
-//     <Header />
-//     {props.children}
-//   </div>
-// );
-
 import React from 'react';
 import { connect } from "react-redux"
 import clsx from 'clsx';
@@ -191,9 +176,7 @@ const Layout = (props) => {
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12}>
-              <Paper className={fixedHeightPaper}>
-                {props.children}
-              </Paper>
+              {props.children}
             </Grid>
           </Grid>
         </Container>
