@@ -4,6 +4,7 @@ import { reducer as flashReducer } from 'redux-flash'
 import { combineReducers } from "redux";
 import mlModels from './reducers/mlModels'
 import mlModel from './reducers/mlModel'
+import loading from './reducers/loading'
 import { createLogger } from "redux-logger";
 
 const loggerMiddleware = createLogger()
@@ -48,6 +49,7 @@ export const initializeStore = (preloadedState = initialState) => {
       reducer,
       mlModels,
       mlModel,
+      loading,
     }),
     preloadedState,
     composeWithDevTools(applyMiddleware(

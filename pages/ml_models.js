@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Layout from '../components/MainLayout'
 import { makeStyles, ServerStyleSheets } from '@material-ui/core/styles';
 import NewMlModelModal from '../components/NewMlModelModal'
+import { startLoading, finishLoading } from '../actions/loading'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,9 +52,11 @@ MlModelPage.getInitialProps = ({ reduxStore }) => {
 
   // return { mlModels };
   const { dispatch } = reduxStore
+	dispatch(startLoading())
   return axios.get('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models')
     .then(response => {
       dispatch(receiveMlModels(response.data))
+	    dispatch(finishLoading())
     })
     .catch(error => {
       console.error(error)

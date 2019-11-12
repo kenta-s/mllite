@@ -23,6 +23,7 @@ import SecondaryListItems from '../components/SecondaryListItems';
 import Chart from '../components/Chart';
 import Deposits from '../components/Deposits';
 import Orders from '../components/Orders';
+import Loading from '../components/Loading'
 
 function Copyright() {
   return (
@@ -130,6 +131,8 @@ const Layout = (props) => {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
+    <>
+    <Loading />
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -183,6 +186,7 @@ const Layout = (props) => {
         <Copyright />
       </main>
     </div>
+    </>
   );
 }
 
