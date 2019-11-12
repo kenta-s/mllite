@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -8,6 +9,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useSelector, useDispatch } from 'react-redux'
+import { addMlModel } from '../actions/mlModels';
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -63,6 +66,7 @@ const NewMlModelModal = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [modelName, setModelName] = React.useState('');
+	const dispatch = useDispatch()
 
   const handleOpen = () => {
     setOpen(true);
@@ -71,6 +75,17 @@ const NewMlModelModal = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+	const submitMlModel = () => {
+    axios.post('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models',
+		  {ml_model: {
+			  name: modelName
+		  }})
+			.then(response => {
+				dispatch(addMlModel(response.data))
+			  handleClose()
+			})
+	}
 
   return (
     <div>
@@ -102,7 +117,7 @@ const NewMlModelModal = () => {
 							margin="normal"
 							variant="outlined"
 						/>
-						<Button variant="contained" color="primary" className={classes.button}>
+						<Button variant="contained" color="primary" className={classes.button} onClick={submitMlModel}>
 							作成
 						</Button>
 

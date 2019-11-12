@@ -17,6 +17,10 @@ const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3, 2),
   },
+	paper: {
+    padding: theme.spacing(3, 2),
+	  margin: theme.spacing(3),
+	}
 }));
 
 const MlModelPage = () => {
@@ -25,7 +29,7 @@ const MlModelPage = () => {
   const mlModelsDom = mlModels.map((mlModel, i) => {
     return(
 			<Link key={i} href={`/ml_models/${mlModel.id}`}>
-        <Paper className={classes.root}>
+        <Paper className={classes.paper}>
           <p>{mlModel.name}</p>
         </Paper>
 			</Link>
