@@ -10,7 +10,7 @@ import axios from 'axios'
 import { receiveMlModels } from '../actions/mlModels'
 import { useSelector, useDispatch } from 'react-redux'
 import Layout from '../components/MainLayout'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ServerStyleSheets } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {

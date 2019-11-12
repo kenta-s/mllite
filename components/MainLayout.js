@@ -186,4 +186,8 @@ const Layout = (props) => {
   );
 }
 
+// Layout.getInitialProps = () => {
+//   console.log('gggggggggggggg')
+// }
+
 export default Layout;
