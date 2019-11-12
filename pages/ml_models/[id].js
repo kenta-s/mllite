@@ -27,6 +27,19 @@ const MlModel = () => {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const mlModel = useSelector(state => state.mlModel)
+	const router = useRouter();
+  const dispatch = useDispatch()
+  React.useEffect(() => {
+		dispatch(startLoading())
+		axios.get(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models/${router.query.id}`)
+			.then(response => {
+				dispatch(receiveMlModel(response.data))
+				dispatch(finishLoading())
+			})
+			.catch(error => {
+				console.error(error)
+			})
+  }, [])
   const uploadCsv = files => {
     // console.log(files[0])
     axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models/${mlModel.id}/upload_csv`,
@@ -60,19 +73,19 @@ const MlModel = () => {
   );
 };
 
-MlModel.getInitialProps = (context) => {
-  const { id } = context.query;
-  const reduxStore = context.reduxStore;
-  const { dispatch } = reduxStore
-	dispatch(startLoading())
-  return axios.get(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models/${id}`)
-    .then(response => {
-      dispatch(receiveMlModel(response.data))
-	    dispatch(finishLoading())
-    })
-    .catch(error => {
-      console.error(error)
-    })
-};
+// MlModel.getInitialProps = (context) => {
+//   // const { id } = context.query;
+//   // const reduxStore = context.reduxStore;
+//   // const { dispatch } = reduxStore
+// 	// dispatch(startLoading())
+//   // return axios.get(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models/${id}`)
+//   //   .then(response => {
+//   //     dispatch(receiveMlModel(response.data))
+// 	//     dispatch(finishLoading())
+//   //   })
+//   //   .catch(error => {
+//   //     console.error(error)
+//   //   })
+// };
 
 export default withRedux(MlModel)
