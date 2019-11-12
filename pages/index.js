@@ -8,6 +8,7 @@ import useInterval from '../lib/useInterval'
 import Clock from '../components/clock'
 import Counter from '../components/counter'
 import Layout from '../components/MainLayout'
+import Title from '../components/Title';
 
 const useStyles = makeStyles(theme => ({
   fixedHeight: {
@@ -28,6 +29,7 @@ const IndexPage = () => {
   }, 1000)
   return (
     <Layout>
+      <Title>home</Title>
       <Paper className={fixedHeightPaper}>
         top page
       </Paper>

@@ -13,6 +13,7 @@ import Layout from '../components/MainLayout'
 import { makeStyles, ServerStyleSheets } from '@material-ui/core/styles';
 import NewMlModelModal from '../components/NewMlModelModal'
 import { startLoading, finishLoading } from '../actions/loading'
+import Title from '../components/Title';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,6 +53,7 @@ const MlModelPage = () => {
   })
   return(
     <Layout>
+      <Title>モデル一覧</Title>
       <div>
         {mlModelsDom}
       </div>

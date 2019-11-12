@@ -10,6 +10,7 @@ import Layout from '../../components/MainLayout';
 import { receiveMlModel } from '../../actions/mlModel'
 import Button from '@material-ui/core/Button';
 import { startLoading, finishLoading } from '../../actions/loading'
+import Title from '../../components/Title';
 
 const useStyles = makeStyles(theme => ({
   fixedHeight: {
@@ -53,6 +54,7 @@ const MlModel = () => {
 
   return (
     <Layout>
+      <Title>{mlModel.name}</Title>
       <Paper className={fixedHeightPaper}>
         <h1>{mlModel.name}</h1>
         <div>
