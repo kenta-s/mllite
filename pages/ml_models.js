@@ -11,6 +11,7 @@ import { receiveMlModels } from '../actions/mlModels'
 import { useSelector, useDispatch } from 'react-redux'
 import Layout from '../components/MainLayout'
 import { makeStyles, ServerStyleSheets } from '@material-ui/core/styles';
+import NewMlModelModal from '../components/NewMlModelModal'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,6 +36,7 @@ const MlModelPage = () => {
       <div>
         {mlModelsDom}
       </div>
+      <NewMlModelModal />
     </Layout>
   )
 }
