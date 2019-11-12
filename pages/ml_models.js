@@ -26,6 +26,20 @@ const useStyles = makeStyles(theme => ({
 
 const MlModelPage = () => {
   const classes = useStyles();
+  const dispatch = useDispatch()
+	React.useEffect(() => {
+	  dispatch(startLoading())
+		axios.get('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models')
+		  .then(response => {
+		    dispatch(receiveMlModels(response.data))
+		  })
+		  .catch(error => {
+		    console.error(error)
+		  })
+			.then(() => {
+		    dispatch(finishLoading())
+			})
+	}, [])
   const mlModels = useSelector(state => state.mlModels.data)
   const mlModelsDom = mlModels.map((mlModel, i) => {
     return(
@@ -46,21 +60,21 @@ const MlModelPage = () => {
   )
 }
 
-MlModelPage.getInitialProps = ({ reduxStore }) => {
-  // const res = await fetch('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models');
-  // const mlModels = await res.json();
-
-  // return { mlModels };
-  const { dispatch } = reduxStore
-	dispatch(startLoading())
-  return axios.get('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models')
-    .then(response => {
-      dispatch(receiveMlModels(response.data))
-	    dispatch(finishLoading())
-    })
-    .catch(error => {
-      console.error(error)
-    })
-}
+// MlModelPage.getInitialProps = ({ reduxStore }) => {
+//   // const res = await fetch('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models');
+//   // const mlModels = await res.json();
+//
+//   // return { mlModels };
+//   const { dispatch } = reduxStore
+// 	dispatch(startLoading())
+//   return axios.get('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models')
+//     .then(response => {
+//       dispatch(receiveMlModels(response.data))
+// 	    dispatch(finishLoading())
+//     })
+//     .catch(error => {
+//       console.error(error)
+//     })
+// }
 
 export default withRedux(MlModelPage)

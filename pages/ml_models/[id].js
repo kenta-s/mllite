@@ -34,10 +34,12 @@ const MlModel = () => {
 		axios.get(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models/${router.query.id}`)
 			.then(response => {
 				dispatch(receiveMlModel(response.data))
-				dispatch(finishLoading())
 			})
 			.catch(error => {
 				console.error(error)
+			})
+			.then(() => {
+		    dispatch(finishLoading())
 			})
   }, [])
   const uploadCsv = files => {
