@@ -30,7 +30,7 @@ const MlModelPage = () => {
   const dispatch = useDispatch()
 	React.useEffect(() => {
 	  dispatch(startLoading())
-		axios.get('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models')
+		axios.get('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models')
 		  .then(response => {
 		    dispatch(receiveMlModels(response.data))
 		  })
