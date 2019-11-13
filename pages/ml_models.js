@@ -14,6 +14,10 @@ import { makeStyles, ServerStyleSheets } from '@material-ui/core/styles';
 import NewMlModelModal from '../components/NewMlModelModal'
 import { startLoading, finishLoading } from '../actions/loading'
 import Title from '../components/Title';
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
+import DoneIcon from '@material-ui/icons/Done';
+import Box from '@material-ui/core/Box'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +26,10 @@ const useStyles = makeStyles(theme => ({
 	paper: {
     padding: theme.spacing(3, 2),
 	  margin: theme.spacing(3),
-	}
+	},
+  chips: {
+    justifyContent: 'center',
+  }
 }));
 
 const MlModelPage = () => {
@@ -46,7 +53,33 @@ const MlModelPage = () => {
     return(
 			<Link key={i} href={`/ml_models/${mlModel.id}`}>
         <Paper className={classes.paper}>
-          <p>{mlModel.name}</p>
+          <Box display="flex" p={1} bgcolor="background.paper">
+            <Box p={1} flexGrow={1}>
+              {mlModel.name}
+            </Box>
+            {mlModel.status === 'ready' &&
+              <Box p={1}>
+                <Chip
+                  icon={<FaceIcon />}
+                  label="準備ができました"
+                  color="primary"
+                  className={classes.chips}
+                  deleteIcon={<DoneIcon />}
+                />
+              </Box>
+            }
+            {mlModel.status === 'pending' &&
+              <Box p={1}>
+                <Chip
+                  icon={<FaceIcon />}
+                  label="学習中"
+                  color="secondary"
+                  className={classes.chips}
+                  deleteIcon={<DoneIcon />}
+                />
+              </Box>
+            }
+          </Box>
         </Paper>
 			</Link>
     )
