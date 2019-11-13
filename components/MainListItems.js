@@ -4,7 +4,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import StarsIcon from '@material-ui/icons/Stars';
+import SubjectIcon from '@material-ui/icons/Subject';
+import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import Link from 'next/link';
 
@@ -20,7 +21,7 @@ const MainListItems = () => {
         <a style={linkStyle}>
           <ListItem button>
             <ListItemIcon>
-              <StarsIcon />
+              <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
@@ -30,7 +31,7 @@ const MainListItems = () => {
         <a style={linkStyle}>
           <ListItem button>
             <ListItemIcon>
-              <StarsIcon />
+              <SubjectIcon />
             </ListItemIcon>
             <ListItemText primary="ML Models" />
           </ListItem>
