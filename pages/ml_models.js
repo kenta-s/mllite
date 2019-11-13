@@ -15,7 +15,8 @@ import NewMlModelModal from '../components/NewMlModelModal'
 import { startLoading, finishLoading } from '../actions/loading'
 import Title from '../components/Title';
 import Chip from '@material-ui/core/Chip';
-import FaceIcon from '@material-ui/icons/Face';
+import CheckIcon from '@material-ui/icons/Check';
+import SchoolIcon from '@material-ui/icons/School';
 import DoneIcon from '@material-ui/icons/Done';
 import Box from '@material-ui/core/Box'
 
@@ -60,7 +61,7 @@ const MlModelPage = () => {
             {mlModel.status === 'ready' &&
               <Box p={1}>
                 <Chip
-                  icon={<FaceIcon />}
+                  icon={<CheckIcon />}
                   label="準備ができました"
                   color="primary"
                   className={classes.chips}
@@ -71,7 +72,7 @@ const MlModelPage = () => {
             {mlModel.status === 'pending' &&
               <Box p={1}>
                 <Chip
-                  icon={<FaceIcon />}
+                  icon={<SchoolIcon />}
                   label="学習中"
                   color="secondary"
                   className={classes.chips}
