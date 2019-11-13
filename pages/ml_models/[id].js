@@ -6,21 +6,35 @@ import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import clsx from 'clsx';
 import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import Layout from '../../components/MainLayout';
 import { receiveMlModel } from '../../actions/mlModel'
 import Button from '@material-ui/core/Button';
 import { startLoading, finishLoading } from '../../actions/loading'
 import Title from '../../components/Title';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
   fixedHeight: {
     height: 340,
+    padding: theme.spacing(3, 2),
   },
   button: {
     margin: theme.spacing(1),
   },
   input: {
     display: 'none',
+  },
+	textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: '96%',
+  },
+	card: {
+	  margin: theme.spacing(3, 0),
+    // width: '96%',
   },
 }));
 
@@ -30,6 +44,8 @@ const MlModel = () => {
   const mlModel = useSelector(state => state.mlModel)
 	const router = useRouter();
   const dispatch = useDispatch()
+  const [targetText, setTargetText] = React.useState('')
+  const [predictedText, setPredictedText] = React.useState('')
   React.useEffect(() => {
 		dispatch(startLoading())
 		axios.get(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${router.query.id}`)
@@ -44,7 +60,6 @@ const MlModel = () => {
 			})
   }, [])
   const uploadCsv = files => {
-    // console.log(files[0])
     axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${mlModel.id}/upload_csv`,
 		  {file: files[0]})
 			.then(response => {
@@ -52,12 +67,57 @@ const MlModel = () => {
 			})
   }
 
+  const predict = () => {
+		dispatch(startLoading())
+		axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${router.query.id}/predict`,
+        {target_text: targetText}
+      )
+			.then(response => {
+        setPredictedText(response.data)
+			})
+			.catch(error => {
+				console.error(error)
+			})
+			.then(() => {
+		    dispatch(finishLoading())
+			})
+  }
+
   return (
     <Layout>
       <Title>{mlModel.name}</Title>
+			<Card className={classes.card}>
+				<CardContent>
+					<Typography className={classes.title} color="textSecondary" gutterBottom>
+						予測結果
+					</Typography>
+					<Typography variant="h5" component="h2">
+						{
+							predictedText !== '' ?
+							<>{predictedText}</> :
+							<>?</>
+						}
+					</Typography>
+				</CardContent>
+			</Card>
       <Paper className={fixedHeightPaper}>
-        <h1>{mlModel.name}</h1>
         <div>
+          <div>
+						<TextField
+							label="予測対象のテキスト"
+							multiline
+							rows="4"
+              value={targetText}
+              onChange={e => setTargetText(e.target.value)}
+							className={classes.textField}
+							margin="normal"
+							variant="outlined"
+						/>
+          </div>
+
+					<Button variant="contained" color="primary" component="span" className={classes.button} onClick={predict}>
+						Predict
+					</Button>
 					<input
 						accept="csv"
 						className={classes.input}
