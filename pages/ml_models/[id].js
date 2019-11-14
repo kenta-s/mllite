@@ -44,7 +44,7 @@ const MlModel = () => {
   const mlModel = useSelector(state => state.mlModel)
 	const router = useRouter();
   const dispatch = useDispatch()
-  const [targetText, setTargetText] = React.useState('')
+  const [targetText, setTargetText] = React.useState({})
   const [predictedText, setPredictedText] = React.useState('')
   React.useEffect(() => {
 		dispatch(startLoading())
@@ -83,6 +83,29 @@ const MlModel = () => {
 			})
   }
 
+  const handleText = (name, text) => {
+    const hash = targetText
+    hash[name] = text
+    setTargetText(hash)
+  }
+
+  const parameterArea = mlModel.parameterNames.map((name, i) => {
+    return(
+      <div key={i}>
+        <TextField
+          label={name}
+          multiline
+          rows="4"
+          value={targetText[name]}
+          onChange={e => handleText(name, e.target.value)}
+          className={classes.textField}
+          margin="normal"
+          variant="outlined"
+        />
+      </div>
+    )
+  })
+
   return (
     <Layout>
       <Title>{mlModel.name}</Title>
@@ -102,19 +125,7 @@ const MlModel = () => {
 			</Card>
       <Paper className={fixedHeightPaper}>
         <div>
-          <div>
-						<TextField
-							label="予測対象のテキスト"
-							multiline
-							rows="4"
-              value={targetText}
-              onChange={e => setTargetText(e.target.value)}
-							className={classes.textField}
-							margin="normal"
-							variant="outlined"
-						/>
-          </div>
-
+          {parameterArea}
 					<Button variant="contained" color="primary" component="span" className={classes.button} onClick={predict}>
 						Predict
 					</Button>
