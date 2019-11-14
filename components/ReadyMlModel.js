@@ -13,6 +13,7 @@ import { receiveMlModel } from '../actions/mlModel'
 import Button from '@material-ui/core/Button';
 import { startLoading, finishLoading } from '../actions/loading'
 import TextField from '@material-ui/core/TextField';
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(theme => ({
   fixedHeight: {
@@ -43,6 +44,7 @@ const ReadyMlModel = () => {
   const dispatch = useDispatch()
   const [targetText, setTargetText] = React.useState({})
   const [predictedText, setPredictedText] = React.useState('')
+  const { t } = useTranslation()
 
   const predict = () => {
 		dispatch(startLoading())
@@ -88,7 +90,7 @@ const ReadyMlModel = () => {
 			<Card className={classes.card}>
 				<CardContent>
 					<Typography className={classes.title} color="textSecondary" gutterBottom>
-						予測結果
+            {t('predictionResult')}
 					</Typography>
 					<Typography variant="h5" component="h2">
 						{

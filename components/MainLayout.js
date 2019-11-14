@@ -24,6 +24,7 @@ import Chart from '../components/Chart';
 import Deposits from '../components/Deposits';
 import Orders from '../components/Orders';
 import Loading from '../components/Loading'
+import i18n from '../lib/i18n'
 
 function Copyright() {
   return (

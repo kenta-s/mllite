@@ -77,7 +77,7 @@ const NewMlModelModal = () => {
   };
 
 	const submitMlModel = () => {
-    axios.post('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models',
+    axios.post('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models',
 		  {ml_model: {
 			  name: modelName
 		  }})

@@ -19,6 +19,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import SchoolIcon from '@material-ui/icons/School';
 import DoneIcon from '@material-ui/icons/Done';
 import Box from '@material-ui/core/Box'
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,6 +51,7 @@ const MlModelPage = () => {
 			})
 	}, [])
   const mlModels = useSelector(state => state.mlModels.data)
+  const { t } = useTranslation()
   const mlModelsDom = mlModels.map((mlModel, i) => {
     return(
 			<Link key={i} href={`/ml_models/${mlModel.id}`}>
@@ -62,7 +64,7 @@ const MlModelPage = () => {
               <Box p={1}>
                 <Chip
                   icon={<CheckIcon />}
-                  label="準備ができました"
+                  label={t('ready')}
                   color="primary"
                   className={classes.chips}
                   deleteIcon={<DoneIcon />}
@@ -73,7 +75,7 @@ const MlModelPage = () => {
               <Box p={1}>
                 <Chip
                   icon={<SchoolIcon />}
-                  label="学習中"
+                  label={t('pending')}
                   color="secondary"
                   className={classes.chips}
                   deleteIcon={<DoneIcon />}
@@ -87,7 +89,7 @@ const MlModelPage = () => {
   })
   return(
     <Layout>
-      <Title>モデル一覧</Title>
+      <Title>{t('models')}</Title>
       <div>
         {mlModelsDom}
       </div>

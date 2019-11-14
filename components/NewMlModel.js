@@ -51,6 +51,7 @@ const NewMlModel = () => {
         console.log(response)
 			})
   }
+  const { t } = useTranslation()
 
   return (
     <>
@@ -66,7 +67,7 @@ const NewMlModel = () => {
 					/>
 					<label htmlFor="contained-button-file">
 						<Button variant="contained" color="primary" component="span" className={classes.button}>
-							CSVアップロード
+						  {t('upload csv')}
 						</Button>
 					</label>
         </div>
