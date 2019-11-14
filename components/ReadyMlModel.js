@@ -1,21 +1,18 @@
 import React from 'react'
-import { withRedux } from '../../lib/redux'
+import { withRedux } from '../lib/redux'
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
 import clsx from 'clsx';
 import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Layout from '../../components/MainLayout';
-import { receiveMlModel } from '../../actions/mlModel'
+import { receiveMlModel } from '../actions/mlModel'
 import Button from '@material-ui/core/Button';
-import { startLoading, finishLoading } from '../../actions/loading'
-import Title from '../../components/Title';
+import { startLoading, finishLoading } from '../actions/loading'
 import TextField from '@material-ui/core/TextField';
-import ReadyMlModel from '../../components/ReadyMlModel';
 
 const useStyles = makeStyles(theme => ({
   fixedHeight: {
@@ -38,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MlModel = () => {
+const ReadyMlModel = () => {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const mlModel = useSelector(state => state.mlModel)
@@ -46,26 +43,6 @@ const MlModel = () => {
   const dispatch = useDispatch()
   const [targetText, setTargetText] = React.useState({})
   const [predictedText, setPredictedText] = React.useState('')
-  React.useEffect(() => {
-		dispatch(startLoading())
-		axios.get(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${router.query.id}`)
-			.then(response => {
-				dispatch(receiveMlModel(response.data))
-			})
-			.catch(error => {
-				console.error(error)
-			})
-			.then(() => {
-		    dispatch(finishLoading())
-			})
-  }, [])
-  const uploadCsv = files => {
-    axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${mlModel.id}/upload_csv`,
-		  {file: files[0]})
-			.then(response => {
-        console.log(response)
-			})
-  }
 
   const predict = () => {
 		dispatch(startLoading())
@@ -107,17 +84,34 @@ const MlModel = () => {
   })
 
   return (
-    <Layout>
-      <Title>{mlModel.name}</Title>
-      {
-        mlModel.status === 'ready' &&
-        <ReadyMlModel />
-      }
-    </Layout>
+    <>
+			<Card className={classes.card}>
+				<CardContent>
+					<Typography className={classes.title} color="textSecondary" gutterBottom>
+						予測結果
+					</Typography>
+					<Typography variant="h5" component="h2">
+						{
+							predictedText !== '' ?
+							<>{predictedText}</> :
+							<>?</>
+						}
+					</Typography>
+				</CardContent>
+			</Card>
+      <Paper className={fixedHeightPaper}>
+        <div>
+          {parameterArea}
+					<Button variant="contained" color="primary" component="span" className={classes.button} onClick={predict}>
+						Predict
+					</Button>
+        </div>
+      </Paper>
+    </>
   );
 };
 
-// MlModel.getInitialProps = (context) => {
+// ReadyMlModel.getInitialProps = (context) => {
 //   // const { id } = context.query;
 //   // const reduxStore = context.reduxStore;
 //   // const { dispatch } = reduxStore
@@ -132,4 +126,5 @@ const MlModel = () => {
 //   //   })
 // };
 
-export default withRedux(MlModel)
+// export default withRedux(ReadyMlModel)
+export default withRedux(ReadyMlModel)
