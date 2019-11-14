@@ -17,6 +17,7 @@ const linkStyle = {
 const MainListItems = () => {
   return(
     <div>
+      { /*
       <Link href="/">
         <a style={linkStyle}>
           <ListItem button>
@@ -27,6 +28,7 @@ const MainListItems = () => {
           </ListItem>
         </a>
       </Link>
+      */ }
       <Link href="/ml_models">
         <a style={linkStyle}>
           <ListItem button>
