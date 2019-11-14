@@ -92,4 +92,3 @@ const NewMlModel = () => {
 
 // export default withRedux(NewMlModel)
 export default withRedux(NewMlModel)
-

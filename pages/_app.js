@@ -1,11 +1,23 @@
 import React from 'react';
+import { withRedux } from '../lib/redux'
 import App from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
 import theme from '../src/theme';
 
-export default class MyApp extends App {
+// const useStyles = makeStyles(theme => ({
+//   progress: {
+//     margin: theme.spacing(2),
+//     position: 'absolute',
+//     top: 'calc(50% - 40px)',
+//     left: 'calc(50% - 40px)',
+//   },
+// }));
+
+class MyApp extends App {
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -16,9 +28,11 @@ export default class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
+    // const classes = useStyles();
 
     return (
       <React.Fragment>
+      { /* TODO: <CircularProgress className={classes.progress} /> */ }
         <Head>
           <title>My page</title>
         </Head>
@@ -31,3 +45,5 @@ export default class MyApp extends App {
     );
   }
 }
+
+export default MyApp
