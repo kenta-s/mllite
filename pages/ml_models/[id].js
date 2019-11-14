@@ -16,6 +16,7 @@ import { startLoading, finishLoading } from '../../actions/loading'
 import Title from '../../components/Title';
 import TextField from '@material-ui/core/TextField';
 import ReadyMlModel from '../../components/ReadyMlModel';
+import NewMlModel from '../../components/NewMlModel';
 
 const useStyles = makeStyles(theme => ({
   fixedHeight: {
@@ -109,6 +110,10 @@ const MlModel = () => {
   return (
     <Layout>
       <Title>{mlModel.name}</Title>
+      {
+        mlModel.status === 'new' &&
+        <NewMlModel />
+      }
       {
         mlModel.status === 'ready' &&
         <ReadyMlModel />
