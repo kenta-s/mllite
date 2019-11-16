@@ -71,7 +71,7 @@ const MlModel = () => {
 
   const predict = () => {
 		dispatch(startLoading())
-		axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${router.query.id}/predict`,
+		axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${router.query.id}/prediction`,
         {target_text: targetText}
       )
 			.then(response => {
