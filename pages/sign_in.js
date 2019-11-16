@@ -34,28 +34,40 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SignUp = () => {
-// export default function SignUp() {
+// TODO: implement forgot password?
+const SignIn = () => {
   const classes = useStyles();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [passwordConf, setPasswordConf] = React.useState('');
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const saveCredentialsToLocalStorage = async ({client, accessToken, expiry, uid}) => {
+		localStorage.setItem("access-token", accessToken)
+		localStorage.setItem("uid", uid)
+		localStorage.setItem("token-type", "Bearer")
+		localStorage.setItem("client", client)
+		localStorage.setItem("expiry", expiry)
+  }
 
   const handleSubmit = (e) => {
 		e.preventDefault()
-    axios.post(`${apiHost}/auth`, {
+    axios.post(`${apiHost}/auth/sign_in`, {
       email,
       password,
-      password_confirmation: passwordConf,
     })
-      .then(() => {
-        Router.push('/email_sent')
+      .then(response => {
+        const creds = {
+          client: response.headers["client"],
+          accessToken: response.headers["access-token"],
+          expiry: response.headers["expiry"],
+          uid: response.headers["uid"],
+        }
+        saveCredentialsToLocalStorage(creds)
+          .then(Router.push('/ml_models'))
       })
       .catch(error => {
-        error.response.data.errors.full_messages.map(message => {
-          dispatch(flashMessage(t(`${message}`), {isError: true}))
+        error.response.data.errors.map(message => {
+          dispatch(flashMessage(t('Invalid login credentials'), {isError: true}))
         })
       })
   }
@@ -66,7 +78,7 @@ const SignUp = () => {
 				<LockOutlinedIcon />
 			</Avatar>
 			<Typography component="h1" variant="h5">
-				{t('Sign up')}
+				{t('Sign in')}
 			</Typography>
 			<form className={classes.form} noValidate onSubmit={e => handleSubmit(e)}>
 				<TextField
@@ -89,30 +101,20 @@ const SignUp = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
 				/>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					label={t('Password confirmation')}
-					type="password"
-          value={passwordConf}
-          onChange={e => setPasswordConf(e.target.value)}
-				/>
 				<Button
-          disabled={email.length === 0 || password !== passwordConf || password.length < 6}
+          disabled={email.length === 0 || password.length < 6}
 					type="submit"
 					fullWidth
 					variant="contained"
 					color="primary"
 					className={classes.submit}
 				>
-					{t('Create Account for Free')}
+				  {t('Sign in')}
 				</Button>
 				<Grid container>
 					<Grid item>
-						<Link href="/sign_in" variant="body2">
-							{t("Already have an account? Sign In")}
+						<Link href="/sign_up" variant="body2">
+							{t("Do not have an account? Sign Up")}
 						</Link>
 					</Grid>
 				</Grid>
@@ -121,4 +123,5 @@ const SignUp = () => {
   );
 }
 
-export default withRedux(SignUp)
+export default withRedux(SignIn)
+
