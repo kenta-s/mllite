@@ -11,6 +11,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { receiveMlModel } from '../actions/mlModel'
 import Button from '@material-ui/core/Button';
+import { useTranslation } from "react-i18next";
 import { startLoading, finishLoading } from '../actions/loading'
 import TextField from '@material-ui/core/TextField';
 

@@ -20,6 +20,8 @@ import SchoolIcon from '@material-ui/icons/School';
 import DoneIcon from '@material-ui/icons/Done';
 import Box from '@material-ui/core/Box'
 import { useTranslation } from "react-i18next";
+import Router from 'next/router'
+import { flashMessage } from 'redux-flash'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,23 +37,38 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MlModelPage = () => {
+  const { t } = useTranslation()
   const classes = useStyles();
   const dispatch = useDispatch()
 	React.useEffect(() => {
 	  dispatch(startLoading())
-		axios.get('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models')
+		const instance = axios.create({
+			headers: {
+				"access-token": localStorage.getItem('access-token'),
+				"token-type":   "Bearer",
+				"client":       localStorage.getItem('client'),
+				"expiry":       localStorage.getItem('expiry'),
+				"uid":          localStorage.getItem('uid')
+			}
+		})
+		instance.get(`${apiHost}/api/v1/ml_models`)
 		  .then(response => {
 		    dispatch(receiveMlModels(response.data))
 		  })
 		  .catch(error => {
-		    console.error(error)
+        const response = error.response
+        if(response.status === 401){
+          dispatch(flashMessage(t('Please sign in'), {isError: true}))
+          Router.push('/sign_in')
+        }else{
+          dispatch(flashMessage(t('server error'), {isError: true}))
+        }
 		  })
 			.then(() => {
 		    dispatch(finishLoading())
 			})
 	}, [])
   const mlModels = useSelector(state => state.mlModels.data)
-  const { t } = useTranslation()
   const mlModelsDom = mlModels.map((mlModel, i) => {
     return(
 			<Link key={i} href={`/ml_models/${mlModel.id}`}>

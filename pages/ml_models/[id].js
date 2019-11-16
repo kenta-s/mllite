@@ -18,6 +18,9 @@ import TextField from '@material-ui/core/TextField';
 import ReadyMlModel from '../../components/ReadyMlModel';
 import NewMlModel from '../../components/NewMlModel';
 import PendingMlModel from '../../components/PendingMlModel';
+import { flashMessage } from 'redux-flash'
+import { useTranslation } from "react-i18next";
+import Router from 'next/router'
 
 const useStyles = makeStyles(theme => ({
   fixedHeight: {
@@ -41,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MlModel = () => {
+  const { t } = useTranslation()
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const mlModel = useSelector(state => state.mlModel)
@@ -50,35 +54,82 @@ const MlModel = () => {
   const [predictedText, setPredictedText] = React.useState('')
   React.useEffect(() => {
 		dispatch(startLoading())
-		axios.get(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${router.query.id}`)
+		const instance = axios.create({
+			headers: {
+				"access-token": localStorage.getItem('access-token'),
+				"token-type":   "Bearer",
+				"client":       localStorage.getItem('client'),
+				"expiry":       localStorage.getItem('expiry'),
+				"uid":          localStorage.getItem('uid')
+			}
+		})
+		instance.get(`${apiHost}/api/v1/ml_models/${router.query.id}`)
 			.then(response => {
 				dispatch(receiveMlModel(response.data))
 			})
 			.catch(error => {
-				console.error(error)
+        if(error.response.status === 401){
+          dispatch(flashMessage(t('Please sign in'), {isError: true}))
+          Router.push('/sign_in')
+        }else{
+          dispatch(flashMessage(t('server error'), {isError: true}))
+        }
 			})
 			.then(() => {
 		    dispatch(finishLoading())
 			})
   }, [])
   const uploadCsv = files => {
-    axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${mlModel.id}/upload_csv`,
+		dispatch(startLoading())
+		const instance = axios.create({
+			headers: {
+				"access-token": localStorage.getItem('access-token'),
+				"token-type":   "Bearer",
+				"client":       localStorage.getItem('client'),
+				"expiry":       localStorage.getItem('expiry'),
+				"uid":          localStorage.getItem('uid')
+			}
+		})
+    instance.post(`${apiHost}/api/v1/ml_models/${mlModel.id}/upload_csv`,
 		  {file: files[0]})
 			.then(response => {
         console.log(response)
 			})
+      .catch(error => {
+        if(error.response.status === 401){
+          dispatch(flashMessage(t('Please sign in'), {isError: true}))
+          Router.push('/sign_in')
+        }else{
+          dispatch(flashMessage(t('server error'), {isError: true}))
+        }
+      })
+      .then(() => dispatch(finishLoading()))
   }
 
   const predict = () => {
 		dispatch(startLoading())
-		axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${router.query.id}/prediction`,
+		const instance = axios.create({
+			headers: {
+				"access-token": localStorage.getItem('access-token'),
+				"token-type":   "Bearer",
+				"client":       localStorage.getItem('client'),
+				"expiry":       localStorage.getItem('expiry'),
+				"uid":          localStorage.getItem('uid')
+			}
+		})
+		instance.post(`${apiHost}/api/v1/ml_models/${router.query.id}/prediction`,
         {target_text: targetText}
       )
 			.then(response => {
         setPredictedText(response.data)
 			})
 			.catch(error => {
-				console.error(error)
+        if(error.response.status === 401){
+          dispatch(flashMessage(t('Please sign in'), {isError: true}))
+          Router.push('/sign_in')
+        }else{
+          dispatch(flashMessage(t('server error'), {isError: true}))
+        }
 			})
 			.then(() => {
 		    dispatch(finishLoading())
@@ -112,7 +163,7 @@ const MlModel = () => {
     <Layout>
       <Title>{mlModel.name}</Title>
       {
-        mlModel.status === 'new' &&
+        mlModel.status === 'no_data' &&
         <NewMlModel />
       }
       {
@@ -120,8 +171,18 @@ const MlModel = () => {
         <PendingMlModel />
       }
       {
+        mlModel.status === 'training' &&
+        <PendingMlModel />
+      }
+      {
         mlModel.status === 'ready' &&
         <ReadyMlModel />
+      }
+      {
+        mlModel.status === 'error' &&
+        <>
+          error
+        </>
       }
     </Layout>
   );
