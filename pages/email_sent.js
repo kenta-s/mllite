@@ -43,82 +43,20 @@ const SignUp = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const handleSubmit = (e) => {
-		e.preventDefault()
-    axios.post(`${apiHost}/auth`, {
-      email,
-      password,
-      password_confirmation: passwordConf,
-    })
-      .then(() => {
-        Router.push('/email_sent')
-      })
-      .catch(error => {
-        error.response.data.errors.full_messages.map(message => {
-          dispatch(flashMessage(t(`${message}`), {isError: true}))
-        })
-      })
-  }
-
   return (
     <Layout>
 			<Avatar className={classes.avatar}>
 				<LockOutlinedIcon />
 			</Avatar>
 			<Typography component="h1" variant="h5">
-				{t('Sign up')}
+				{t('Registration is not completed yet')}
 			</Typography>
-			<form className={classes.form} noValidate onSubmit={e => handleSubmit(e)}>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					label={t('Email Address')}
-					autoFocus
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-				/>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					label={t('Password')}
-					type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-				/>
-				<TextField
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					label={t('Password confirmation')}
-					type="password"
-          value={passwordConf}
-          onChange={e => setPasswordConf(e.target.value)}
-				/>
-				<Button
-          disabled={email.length === 0 || password !== passwordConf || password.length < 6}
-					type="submit"
-					fullWidth
-					variant="contained"
-					color="primary"
-					className={classes.submit}
-				>
-					{t('Create Account for Free')}
-				</Button>
-				<Grid container>
-					<Grid item>
-						<Link href="#" variant="body2">
-							{t("Already have an account? Sign In")}
-						</Link>
-					</Grid>
-				</Grid>
-			</form>
+      <p>
+        {t('Confirmation email has been sent')}
+      </p>
     </Layout>
   );
 }
 
 export default withRedux(SignUp)
+
