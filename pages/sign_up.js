@@ -15,6 +15,9 @@ import Container from '@material-ui/core/Container';
 import { useTranslation } from "react-i18next";
 import Layout from "../components/RegistrationLayout"
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { flashMessage } from 'redux-flash'
+import { withRedux } from '../lib/redux'
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -30,16 +33,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignUp() {
+const SignUp = () => {
+// export default function SignUp() {
   const classes = useStyles();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [passwordConf, setPasswordConf] = React.useState('');
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const handleSubmit = (e) => {
 		e.preventDefault()
-    console.log(apiHost)
     axios.post(`${apiHost}/auth`, {
       email,
       password,
@@ -49,9 +53,9 @@ export default function SignUp() {
         // redirect
       })
       .catch(error => {
-        console.log(error.response)
-        error.response.data.errors.full_messages
-        // "Email is invalid", "Email is not an email", "Password confirmation doesn't match Password"
+        error.response.data.errors.full_messages.map(message => {
+          dispatch(flashMessage(t(`${message}`), {isError: true}))
+        })
       })
   }
 
@@ -115,3 +119,5 @@ export default function SignUp() {
     </Layout>
   );
 }
+
+export default withRedux(SignUp)

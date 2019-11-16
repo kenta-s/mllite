@@ -6,6 +6,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import FlashMessages from '../components/FlashMessages'
 import theme from '../src/theme';
 
 class MyApp extends App {
@@ -30,6 +31,7 @@ class MyApp extends App {
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Component {...pageProps} />
+		      <FlashMessages />
         </ThemeProvider>
       </React.Fragment>
     );
