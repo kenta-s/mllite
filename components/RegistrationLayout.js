@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import i18n from '../lib/i18n'
 import { useTranslation } from "react-i18next";
 import Copyright from "./Copyright"
+import Loading from '../components/Loading'
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -47,6 +48,7 @@ export default function Layout(props) {
 
   return (
     <Container component="main" maxWidth="xs">
+      <Loading />
       <CssBaseline />
       <div className={classes.paper}>
         {props.children}
