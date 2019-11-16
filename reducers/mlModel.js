@@ -1,5 +1,6 @@
 import {
   RECEIVE_ML_MODEL,
+  UPDATE_ML_MODEL_STATUS,
 } from "../actionType";
 
 const initialState = {
@@ -19,6 +20,13 @@ const mlModel = (state = initialState, action) => {
         name,
         status,
         parameterNames,
+      };
+    }
+    case UPDATE_ML_MODEL_STATUS: {
+      const status = action.status
+      return {
+        ...state,
+        status,
       };
     }
     default:

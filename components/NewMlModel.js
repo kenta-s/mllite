@@ -1,4 +1,5 @@
 import React from 'react'
+import { flashMessage } from 'redux-flash'
 import { withRedux } from '../lib/redux'
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
@@ -14,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import { useTranslation } from "react-i18next";
 import { startLoading, finishLoading } from '../actions/loading'
 import TextField from '@material-ui/core/TextField';
+import { updateMlModelStatus } from '../actions/mlModel'
 
 const useStyles = makeStyles(theme => ({
   fixedHeight: {
@@ -37,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const NewMlModel = () => {
+  const { t } = useTranslation()
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const mlModel = useSelector(state => state.mlModel)
@@ -46,13 +49,32 @@ const NewMlModel = () => {
   const [predictedText, setPredictedText] = React.useState('')
 
   const uploadCsv = files => {
-    axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${mlModel.id}/upload_csv`,
-		  {file: files[0]})
+		dispatch(startLoading())
+		const params = new FormData();
+		params.append('csv_file', files[0])
+		const instance = axios.create({
+			headers: {
+				"access-token": localStorage.getItem('access-token'),
+				"token-type":   "Bearer",
+				"client":       localStorage.getItem('client'),
+				"expiry":       localStorage.getItem('expiry'),
+				"uid":          localStorage.getItem('uid')
+			}
+		})
+    instance.post(`${apiHost}/api/v1/ml_models/${mlModel.id}/upload_csv`, params)
 			.then(response => {
-        console.log(response)
+				dispatch(updateMlModelStatus('pending'))
 			})
+      .catch(error => {
+        if(error.response.status === 401){
+          dispatch(flashMessage(t('Please sign in'), {isError: true}))
+          Router.push('/sign_in')
+        }else{
+          dispatch(flashMessage(t('server error'), {isError: true}))
+        }
+      })
+      .then(() => dispatch(finishLoading()))
   }
-  const { t } = useTranslation()
 
   return (
     <>

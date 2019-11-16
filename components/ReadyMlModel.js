@@ -1,4 +1,5 @@
 import React from 'react'
+import { flashMessage } from 'redux-flash'
 import { withRedux } from '../lib/redux'
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
@@ -48,14 +49,29 @@ const ReadyMlModel = () => {
 
   const predict = () => {
 		dispatch(startLoading())
-		axios.post(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models/${router.query.id}/prediction`,
-        {target_text: targetText}
+		const instance = axios.create({
+			headers: {
+				"access-token": localStorage.getItem('access-token'),
+				"token-type":   "Bearer",
+				"client":       localStorage.getItem('client'),
+				"expiry":       localStorage.getItem('expiry'),
+				"uid":          localStorage.getItem('uid')
+			}
+		})
+    // TODO: fix parameters
+		instance.post(`${apiHost}/api/v1/ml_models/${router.query.id}/prediction`,
+        {target_parameters: [targetText]}
       )
 			.then(response => {
-        setPredictedText(response.data)
+        setPredictedText(response.data.predicted)
 			})
 			.catch(error => {
-				console.error(error)
+        if(error.response.status === 401){
+          dispatch(flashMessage(t('Please sign in'), {isError: true}))
+          Router.push('/sign_in')
+        }else{
+          dispatch(flashMessage(t('server error'), {isError: true}))
+        }
 			})
 			.then(() => {
 		    dispatch(finishLoading())

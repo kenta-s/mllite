@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import axios from 'axios'
+import { startLoading, finishLoading } from '../actions/loading'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -77,13 +78,35 @@ const NewMlModelModal = () => {
   };
 
 	const submitMlModel = () => {
-    axios.post('https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0-oas3/ml_models',
+		const instance = axios.create({
+			headers: {
+				"access-token": localStorage.getItem('access-token'),
+				"token-type":   "Bearer",
+				"client":       localStorage.getItem('client'),
+				"expiry":       localStorage.getItem('expiry'),
+				"uid":          localStorage.getItem('uid')
+			}
+		})
+		dispatch(startLoading())
+    instance.post(`${apiHost}/api/v1/ml_models`,
 		  {ml_model: {
 			  name: modelName
 		  }})
 			.then(response => {
 				dispatch(addMlModel(response.data))
+        setModelName('')
 			  handleClose()
+			})
+			.catch(error => {
+        if(error.response.status === 401){
+          dispatch(flashMessage(t('Please sign in'), {isError: true}))
+          Router.push('/sign_in')
+        }else{
+          dispatch(flashMessage(t('server error'), {isError: true}))
+        }
+			})
+			.then(() => {
+		    dispatch(finishLoading())
 			})
 	}
 

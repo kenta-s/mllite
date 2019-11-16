@@ -50,8 +50,7 @@ const MlModel = () => {
   const mlModel = useSelector(state => state.mlModel)
 	const router = useRouter();
   const dispatch = useDispatch()
-  const [targetText, setTargetText] = React.useState({})
-  const [predictedText, setPredictedText] = React.useState('')
+
   React.useEffect(() => {
 		dispatch(startLoading())
 		const instance = axios.create({
@@ -79,85 +78,6 @@ const MlModel = () => {
 		    dispatch(finishLoading())
 			})
   }, [])
-  const uploadCsv = files => {
-		dispatch(startLoading())
-		const instance = axios.create({
-			headers: {
-				"access-token": localStorage.getItem('access-token'),
-				"token-type":   "Bearer",
-				"client":       localStorage.getItem('client'),
-				"expiry":       localStorage.getItem('expiry'),
-				"uid":          localStorage.getItem('uid')
-			}
-		})
-    instance.post(`${apiHost}/api/v1/ml_models/${mlModel.id}/upload_csv`,
-		  {file: files[0]})
-			.then(response => {
-        console.log(response)
-			})
-      .catch(error => {
-        if(error.response.status === 401){
-          dispatch(flashMessage(t('Please sign in'), {isError: true}))
-          Router.push('/sign_in')
-        }else{
-          dispatch(flashMessage(t('server error'), {isError: true}))
-        }
-      })
-      .then(() => dispatch(finishLoading()))
-  }
-
-  const predict = () => {
-		dispatch(startLoading())
-		const instance = axios.create({
-			headers: {
-				"access-token": localStorage.getItem('access-token'),
-				"token-type":   "Bearer",
-				"client":       localStorage.getItem('client'),
-				"expiry":       localStorage.getItem('expiry'),
-				"uid":          localStorage.getItem('uid')
-			}
-		})
-		instance.post(`${apiHost}/api/v1/ml_models/${router.query.id}/prediction`,
-        {target_text: targetText}
-      )
-			.then(response => {
-        setPredictedText(response.data)
-			})
-			.catch(error => {
-        if(error.response.status === 401){
-          dispatch(flashMessage(t('Please sign in'), {isError: true}))
-          Router.push('/sign_in')
-        }else{
-          dispatch(flashMessage(t('server error'), {isError: true}))
-        }
-			})
-			.then(() => {
-		    dispatch(finishLoading())
-			})
-  }
-
-  const handleText = (name, text) => {
-    const hash = targetText
-    hash[name] = text
-    setTargetText(hash)
-  }
-
-  const parameterArea = mlModel.parameterNames.map((name, i) => {
-    return(
-      <div key={i}>
-        <TextField
-          label={name}
-          multiline
-          rows="4"
-          value={targetText[name]}
-          onChange={e => handleText(name, e.target.value)}
-          className={classes.textField}
-          margin="normal"
-          variant="outlined"
-        />
-      </div>
-    )
-  })
 
   return (
     <Layout>
