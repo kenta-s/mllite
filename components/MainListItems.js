@@ -1,5 +1,5 @@
 import React from 'react';
-// import { connect } from "react-redux"
+import { useTranslation } from "react-i18next";
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -15,6 +15,7 @@ const linkStyle = {
 };
 
 const MainListItems = () => {
+  const { t } = useTranslation()
   return(
     <div>
       { /*
@@ -35,7 +36,7 @@ const MainListItems = () => {
             <ListItemIcon>
               <SubjectIcon />
             </ListItemIcon>
-            <ListItemText primary="ML Models" />
+            <ListItemText primary={t('ml_models')} />
           </ListItem>
         </a>
       </Link>
