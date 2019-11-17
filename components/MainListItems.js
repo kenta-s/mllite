@@ -36,7 +36,7 @@ const MainListItems = () => {
             <ListItemIcon>
               <SubjectIcon />
             </ListItemIcon>
-            <ListItemText primary={t('ml_models')} />
+            <ListItemText primary={t('models')} />
           </ListItem>
         </a>
       </Link>
