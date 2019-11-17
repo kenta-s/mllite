@@ -1,6 +1,6 @@
 const API_HOSTS = {
   'development': 'http://localhost:3000',
-  'production': 'https://mllite-api.herokuapp.com',
+  'production': 'https://api.mllite.com',
 }
 module.exports = {
   webpack: (config, {}) => {
