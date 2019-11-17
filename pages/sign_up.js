@@ -1,5 +1,6 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import { startLoading, finishLoading } from '../actions/loading'
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -35,7 +36,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUp = () => {
-// export default function SignUp() {
   const classes = useStyles();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -45,6 +45,7 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
 		e.preventDefault()
+    dispatch(startLoading())
     axios.post(`${apiHost}/auth`, {
       email,
       password,
@@ -58,6 +59,7 @@ const SignUp = () => {
           dispatch(flashMessage(t(`${message}`), {isError: true}))
         })
       })
+      .then(() => dispatch(finishLoading()))
   }
 
   return (

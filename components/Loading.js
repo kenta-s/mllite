@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 'calc(50% - 40px)',
     left: 'calc(50% - 40px)',
+    zIndex: 1000,
   },
 }));
 
@@ -26,15 +27,4 @@ const Loading = () => {
   )
 }
 
-// const mapStateToProps = state => {
-//   return { 
-//     loading: state.loading.status,
-//   }
-// };
-// 
-// export default connect(
-//   mapStateToProps,
-//   null
-// )(Loading);
 export default Loading
-

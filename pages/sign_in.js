@@ -1,6 +1,7 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import { startLoading, finishLoading } from '../actions/loading'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -51,6 +52,7 @@ const SignIn = () => {
 
   const handleSubmit = (e) => {
 		e.preventDefault()
+    dispatch(startLoading())
     axios.post(`${apiHost}/auth/sign_in`, {
       email,
       password,
@@ -70,6 +72,7 @@ const SignIn = () => {
           dispatch(flashMessage(t('Invalid login credentials'), {isError: true}))
         })
       })
+      .then(() => dispatch(finishLoading()))
   }
 
   return (
