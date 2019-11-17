@@ -43,7 +43,7 @@ const ReadyMlModel = () => {
   const mlModel = useSelector(state => state.mlModel)
 	const router = useRouter();
   const dispatch = useDispatch()
-  const [targetText, setTargetText] = React.useState({})
+  const [targetParams, setTargetParams] = React.useState({})
   const [predictedText, setPredictedText] = React.useState('')
   const { t } = useTranslation()
 
@@ -60,7 +60,7 @@ const ReadyMlModel = () => {
 		})
     // TODO: fix parameters
 		instance.post(`${apiHost}/api/v1/ml_models/${router.query.id}/prediction`,
-        {target_parameters: [targetText]}
+        {target_parameters: targetParams}
       )
 			.then(response => {
         setPredictedText(response.data.predicted)
@@ -79,9 +79,9 @@ const ReadyMlModel = () => {
   }
 
   const handleText = (name, text) => {
-    const hash = targetText
+    const hash = targetParams
     hash[name] = text
-    setTargetText(hash)
+    setTargetParams(hash)
   }
 
   const parameterArea = mlModel.parameterNames.map((name, i) => {
@@ -91,7 +91,7 @@ const ReadyMlModel = () => {
           label={name}
           multiline
           rows="4"
-          value={targetText[name]}
+          value={targetParams[name]}
           onChange={e => handleText(name, e.target.value)}
           className={classes.textField}
           margin="normal"
@@ -129,20 +129,4 @@ const ReadyMlModel = () => {
   );
 };
 
-// ReadyMlModel.getInitialProps = (context) => {
-//   // const { id } = context.query;
-//   // const reduxStore = context.reduxStore;
-//   // const { dispatch } = reduxStore
-// 	// dispatch(startLoading())
-//   // return axios.get(`https://virtserver.swaggerhub.com/kenta-s/mllite/1.0.0/ml_models/${id}`)
-//   //   .then(response => {
-//   //     dispatch(receiveMlModel(response.data))
-// 	//     dispatch(finishLoading())
-//   //   })
-//   //   .catch(error => {
-//   //     console.error(error)
-//   //   })
-// };
-
-// export default withRedux(ReadyMlModel)
 export default withRedux(ReadyMlModel)
