@@ -1,4 +1,6 @@
 import React from 'react';
+import Fab from '@material-ui/core/Fab';
+import LanguageIcon from '@material-ui/icons/Language';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -40,6 +42,12 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  fab: {
+    position: 'absolute',
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+    fontSize: 30,
+  },
 }));
 
 export default function Layout(props) {
@@ -50,6 +58,9 @@ export default function Layout(props) {
     <Container component="main" maxWidth="xs">
       <Loading />
       <CssBaseline />
+      { /*
+      <LanguageIcon className={classes.fab} />
+      */ }
       <div className={classes.paper}>
         {props.children}
       </div>
