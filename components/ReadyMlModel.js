@@ -58,7 +58,6 @@ const ReadyMlModel = () => {
 				"uid":          localStorage.getItem('uid')
 			}
 		})
-    // TODO: fix parameters
 		instance.post(`${apiHost}/api/v1/ml_models/${router.query.id}/prediction`,
         {target_parameters: targetParams}
       )
