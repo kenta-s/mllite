@@ -5,6 +5,7 @@ import { combineReducers } from "redux";
 import mlModels from './reducers/mlModels'
 import mlModel from './reducers/mlModel'
 import loading from './reducers/loading'
+import language from './reducers/language'
 import { createLogger } from "redux-logger";
 import { middleware as flashMiddleware } from 'redux-flash'
 
@@ -17,6 +18,7 @@ export const initializeStore = () => {
       mlModels,
       mlModel,
       loading,
+      language,
       flash: flashReducer,
     }),
     composeWithDevTools(applyMiddleware(

@@ -14,10 +14,13 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import i18n from '../lib/i18n'
+import _ from '../lib/i18n'
+import i18n from 'i18next';
 import { useTranslation } from "react-i18next";
+import { useSelector, useDispatch } from 'react-redux'
 import Copyright from "./Copyright"
 import Loading from '../components/Loading'
+import LanguageSettings from '../components/LanguageSettings'
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -53,14 +56,16 @@ const useStyles = makeStyles(theme => ({
 export default function Layout(props) {
   const classes = useStyles();
   const { t } = useTranslation()
+  const lng = useSelector(state => state.language.use)
+  React.useEffect(() => {
+    i18n.changeLanguage(lng)
+  }, [])
 
   return (
     <Container component="main" maxWidth="xs">
       <Loading />
       <CssBaseline />
-      { /*
-      <LanguageIcon className={classes.fab} />
-      */ }
+      {/* <LanguageSettings /> */}
       <div className={classes.paper}>
         {props.children}
       </div>

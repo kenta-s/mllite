@@ -14,9 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useTranslation } from "react-i18next";
+import i18n from 'i18next';
+import { Translation } from 'react-i18next';
 import Layout from "../components/RegistrationLayout"
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { flashMessage } from 'redux-flash'
 import { withRedux } from '../lib/redux'
 import Router from 'next/router'
@@ -41,6 +43,11 @@ const SignIn = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const { t } = useTranslation()
+  // const lng = useSelector(state => state.language.use)
+  // React.useEffect(() => {
+  //   i18n.changeLanguage('en-US')
+  // }, [])
+  // i18n.changeLanguage('en-US')
   const dispatch = useDispatch()
   const saveCredentialsToLocalStorage = async ({client, accessToken, expiry, uid}) => {
 		localStorage.setItem("access-token", accessToken)
