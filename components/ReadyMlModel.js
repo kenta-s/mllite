@@ -78,7 +78,7 @@ const ReadyMlModel = () => {
   }
 
   const handleText = (name, text) => {
-    const hash = targetParams
+    const hash = Object.assign({}, targetParams)
     hash[name] = text
     setTargetParams(hash)
   }
